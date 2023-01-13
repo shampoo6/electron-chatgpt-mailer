@@ -6,6 +6,7 @@ import {chatConfig} from "../config/chatConfig";
 import {sendMail} from "../utils/mailer";
 import ejsParams from "../utils/ejsParams";
 import path from "path";
+import * as fs from "fs";
 
 ipcMain.on('sendMail', async (event, content) => {
     console.log('ready to send mail')
@@ -23,7 +24,7 @@ ipcMain.on('sendMail', async (event, content) => {
     // 判断是否需要附件
     if (template.attachments) {
         // 添加附件
-        mail.attachments = [{filename: '资料.zip', content: path.join(process.resourcesPath, '资料.zip')}]
+        mail.attachments = [{filename: '资料.zip', content: fs.createReadStream(path.join(process.resourcesPath, '资料.zip'))}]
     }
 
     try {
@@ -46,6 +47,7 @@ ipcMain.on('sendMail', async (event, content) => {
     const res = await sendMail(mail)
     console.log(res)
     if (res.accepted && res.accepted.length > 0) {
-        app.quit()
+        // await wait(3000)
+        // app.quit()
     }
 })

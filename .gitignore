@@ -93,6 +93,7 @@ out/
 
 src/**/*.bak
 *.bat
+test.js
 
 /src/config/chatConfig.ts
 /src/config/mailCommonConfig.ts

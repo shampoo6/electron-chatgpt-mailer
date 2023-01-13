@@ -2,7 +2,6 @@ import {chatConfig} from "../config/chatConfig";
 import {makeMessage} from "./getAiMessage";
 import {ipcRenderer} from "electron";
 import {wait} from "../utils/utils";
-import {AIWriteParams} from "../types/AIWriteParams";
 
 const requires = [
     '邮件内容是一份记录技术知识点的笔记',
