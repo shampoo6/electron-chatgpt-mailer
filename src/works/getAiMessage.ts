@@ -1,6 +1,7 @@
 import {wait} from "../utils/utils";
 import {ipcRenderer, IpcRendererEvent, clipboard} from "electron";
 import {makeZipFile} from "./makeZipFile";
+import {AIWriteParams} from "../types/AIWriteParams";
 
 export async function getAiMessage(): Promise<void> {
     // 获取要填入输入框的问题
@@ -81,11 +82,14 @@ async function checkLoop(): Promise<string> {
     return text
 }
 
-async function getQuestionCallback(event: IpcRendererEvent, question: string, attachments: boolean) {
-    if (attachments) {
-        await makeZipFile()
+// question: 要问ai的问题
+// templateParams: ejs模板参数
+// attachments: 是需要构造附件
+async function getQuestionCallback(event: IpcRendererEvent, data: AIWriteParams) {
+    if (data.attachments) {
+        await makeZipFile(data.templateParams)
         await wait(3000)
     }
-    const content = await makeMessage(question)
+    const content = await makeMessage(data.question)
     ipcRenderer.send('sendMail', content)
 }

@@ -27,10 +27,18 @@ ipcMain.on('sendMail', async (event, content) => {
     }
 
     try {
+        // 构造编译参数
+        const templateParams = {
+            ...template.params,
+            date: ejsParams.date,
+            sender: mail.sender
+        }
         // 编译签名
-        mail.sign = ejs.render(mail.sign, {sender: mail.sender})
+        mail.sign = ejs.render(mail.sign, templateParams)
         // 编译主题
-        mail.subject = ejs.render(mail.subject, {date: ejsParams.date})
+        mail.subject = ejs.render(mail.subject, templateParams)
+        // 编译内容
+        mail.content = ejs.render(mail.content, templateParams)
     } catch (e) {
         console.log(e)
     }
