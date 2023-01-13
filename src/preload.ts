@@ -5,6 +5,7 @@ import {inputAccount} from "./works/inputAccount";
 import {inputPassword} from "./works/inputPassword";
 import {hideCover} from "./works/hideCover";
 import {getAiMessage} from "./works/getAiMessage";
+import {makeZipFile} from "./works/makeZipFile";
 
 window.addEventListener('load', async () => {
     console.log(location.href)
@@ -24,7 +25,7 @@ window.addEventListener('load', async () => {
         // 会话页面
         // 隐藏遮罩
         await hideCover()
-        // 获取ai输出
+        // 获取ai输出并发送邮件
         await getAiMessage()
     }
 })

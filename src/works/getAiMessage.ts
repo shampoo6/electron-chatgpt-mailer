@@ -1,10 +1,38 @@
 import {wait} from "../utils/utils";
 import {ipcRenderer, IpcRendererEvent, clipboard} from "electron";
+import {makeZipFile} from "./makeZipFile";
 
 export async function getAiMessage(): Promise<void> {
     // 获取要填入输入框的问题
     ipcRenderer.once('getQuestion', getQuestionCallback)
     ipcRenderer.send('getQuestion')
+}
+
+// 叫ai生成一段话
+// prompts: 提示内容 用于填入 textarea
+export async function makeMessage(prompts: string): Promise<string> {
+    const textarea = document.querySelector('textarea') as HTMLTextAreaElement
+    await wait(1000)
+    textarea.value = prompts
+    const btn = document.querySelector('.absolute.p-1.rounded-md') as HTMLButtonElement
+    btn.click()
+
+    await wait(3000)
+
+    let content = ''
+    try {
+        // 获取最后一行文本作为结束符号
+        content = await checkLoop()
+        console.log('over')
+        // 处理换行符
+        content = content.replace(/(?<=<[\s\S]+?>)\n/g, '')
+        // 截取body的内容
+        content = content.match(/(?<=<body>)[\s\S]*(?=<\/body>)/)[0]
+        console.log(content)
+    } catch (e) {
+        console.error(e)
+    }
+    return content
 }
 
 // 结束标志
@@ -53,27 +81,11 @@ async function checkLoop(): Promise<string> {
     return text
 }
 
-async function getQuestionCallback(event: IpcRendererEvent, question: string) {
-    console.log(question)
-    const textarea = document.querySelector('textarea') as HTMLTextAreaElement
-    await wait(1000)
-    textarea.value = question
-    const btn = document.querySelector('.absolute.p-1.rounded-md') as HTMLButtonElement
-    btn.click()
-
-    await wait(3000)
-
-    try {
-        // 获取最后一行文本作为结束符号
-        let content = await checkLoop()
-        console.log('over')
-        // 处理换行符
-        content = content.replace(/(?<=>)\n/g, '')
-        // 截取body的内容
-        content = content.match(/(?<=<body>)[\s\S]*(?=<\/body>)/)[0]
-        console.log(content)
-        ipcRenderer.send('sendMail', content)
-    } catch (e) {
-        console.error(e)
+async function getQuestionCallback(event: IpcRendererEvent, question: string, attachments: boolean) {
+    if (attachments) {
+        await makeZipFile()
+        await wait(3000)
     }
+    const content = await makeMessage(question)
+    ipcRenderer.send('sendMail', content)
 }

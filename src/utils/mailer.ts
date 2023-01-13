@@ -12,6 +12,7 @@ export async function sendMail(mail: Mail) {
         to: mail.to,
         cc: mail.copy,
         subject: mail.subject,
-        html: `<p>${mail.content}</p>${mail.sign}`
+        html: `<p>${mail.content}</p>${mail.sign}`,
+        attachments: mail.attachments || []
     });
 }

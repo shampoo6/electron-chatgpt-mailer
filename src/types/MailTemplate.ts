@@ -23,5 +23,7 @@ export type MailTemplate = {
         to: string,
         // 抄送邮箱
         copy: string,
-    }
+    },
+    // 是否添加附件
+    attachments?: boolean
 }

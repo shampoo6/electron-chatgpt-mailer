@@ -16,5 +16,5 @@ ipcMain.on('getQuestion', async event => {
 
     // 组装问题
     const question = `${prompts}${temp}`.trim()
-    event.reply('getQuestion', question)
+    event.reply('getQuestion', question, template.attachments)
 })

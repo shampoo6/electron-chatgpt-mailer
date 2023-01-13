@@ -17,4 +17,6 @@ export type Mail = {
     content: string,
     // 签名
     sign: string,
+    // 附件
+    attachments?: { [key: string]: any, filename: string, content: any }[]
 }

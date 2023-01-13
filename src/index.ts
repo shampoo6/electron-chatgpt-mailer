@@ -68,8 +68,8 @@ app.on('ready', async () => {
     createWindow()
     await clearCache()
     await require('./message/sendMail')
-    await require('./message/getConfig')
     await require('./message/getQuestion')
+    await require('./message/makeFile')
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

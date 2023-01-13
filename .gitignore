@@ -91,6 +91,10 @@ out/
 .idea
 .vscode
 
+src/**/*.bak
+*.bat
+
 /src/config/chatConfig.ts
 /src/config/mailCommonConfig.ts
 /src/templates/上课日报.ts
+/src/templates/备课日报.ts
