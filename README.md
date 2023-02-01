@@ -1,5 +1,7 @@
 # electron-chatgpt-emailer
 
+该项目以用 `puppeteer` 技术重构，请参考仓库 [puppeteer-chatgpt-mailer](https://github.com/shampoo6/puppeteer-chatgpt-mailer)
+
 通过 OpenAI 的 ChatGPT 帮助完成并发送邮件
 
 ## 特点
